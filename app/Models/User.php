@@ -41,6 +41,26 @@ class User extends Authenticatable
     ];
 
     /**
+     * The accessors to append to the model's array form.
+     *
+     * @var array
+     */
+    protected $appends = ['photo_url'];
+
+    /**
+     * Get the full URL for the user's photo.
+     *
+     * @return string|null
+     */
+    public function getPhotoUrlAttribute()
+    {
+        if ($this->photo) {
+            return url('storage/' . $this->photo);
+        }
+        return null;
+    }
+
+    /**
      * Get the attributes that should be cast.
      *
      * @return array<string, string>

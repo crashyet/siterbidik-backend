@@ -15,13 +15,8 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        User::create([
-            'nisn' => 1234567890,
-            'name' => 'Adhit',
-            'class' => '12 IPA 1',
-            'role' => 'siswa',
-            'password' => 'password123',
-            'is_first_login' => true,
-        ]);
+        User::create(
+          [ 'nisn' => '2234567890', 'name' => 'Adhitya Putra', 'class' => '12 IPA 1', 'role' => 'siswa', 'password' => 'password123', 'is_first_login' => true,],
+        );
     }
 }

@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\SimulationVideoController;
 use App\Http\Controllers\Api\VideoController;
+use App\Http\Controllers\Api\SubmissionController;
 
 
 Route::get('/ping', function () {
@@ -15,6 +16,7 @@ Route::get('/ping', function () {
 });
 
 Route::post('/login', [AuthController::class, 'login']);
+Route::post('/register', [AuthController::class, 'register']);
 
 // Public video routes
 Route::get('/videos', [VideoController::class, 'index']);
@@ -58,6 +60,13 @@ Route::middleware('auth:sanctum')->group(function () {
     
     return response()->json($debug);
   });
+
+  // Submission routes
+  Route::post('/submissions', [SubmissionController::class, 'store']);
+  Route::get('/submissions', [SubmissionController::class, 'index']);
+  Route::get('/submissions/my', [SubmissionController::class, 'showStudentSubmission']);
+  Route::get('/submissions/my-all', [SubmissionController::class, 'indexMySubmissions']);
+  Route::post('/submissions/{id}/grade', [SubmissionController::class, 'grade']);
 });
 
 

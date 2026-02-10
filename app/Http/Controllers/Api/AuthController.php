@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
+use App\Models\User;
 
 class AuthController extends Controller
 {
@@ -40,6 +41,34 @@ class AuthController extends Controller
         'user' => $user,
         'token' => $token,
       ], 200);
+    }
+
+    public function register(Request $request)
+    {
+      $request->validate([
+        'nisn' => 'numeric|unique:users,nisn',
+        'name' => 'required|string|max:255',
+        'email' => 'email|unique:users,email',
+        'password' => 'required|string|min:8',
+        'role' => 'required|string',
+      ]);
+
+      $user = User::create([
+        'nisn' => $request->nisn,
+        'name' => $request->name,
+        'email' => $request->email,
+        'password' => Hash::make($request->password),
+        'role' => $request->role,
+        'is_first_login' => true,
+      ]);
+
+      $token = $user->createToken('auth-token')->plainTextToken;
+
+      return response()->json([
+        'message' => 'Registrasi berhasil',
+        'user' => $user,
+        'token' => $token,
+      ], 201);
     }
 
     public function completedprofile(Request $request)

@@ -32,8 +32,10 @@ class SubmissionController extends Controller
 
         // Filter by class if the user is a teacher (guru) and has a class assigned
         if ($user->role === 'guru' && !empty($user->class)) {
-            $query->whereHas('user', function ($q) use ($user) {
-                $q->where('class', $user->class);
+            // Support multiple classes separated by comma (e.g., "10 IPA 1, 10 IPA 2")
+            $classes = array_map('trim', explode(',', $user->class));
+            $query->whereHas('user', function ($q) use ($classes) {
+                $q->whereIn('class', $classes);
             });
         }
 

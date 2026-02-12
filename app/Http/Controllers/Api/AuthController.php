@@ -46,8 +46,9 @@ class AuthController extends Controller
     public function register(Request $request)
     {
       $request->validate([
-        'nisn' => 'numeric|unique:users,nisn',
+        'nisn' => 'nullable|numeric|unique:users,nisn',
         'name' => 'required|string|max:255',
+        'class' => 'nullable|string|max:255',
         'email' => 'email|unique:users,email',
         'password' => 'required|string|min:8',
         'role' => 'required|string',
@@ -56,6 +57,7 @@ class AuthController extends Controller
       $user = User::create([
         'nisn' => $request->nisn,
         'name' => $request->name,
+        'class' => $request->class,
         'email' => $request->email,
         'password' => Hash::make($request->password),
         'role' => $request->role,
